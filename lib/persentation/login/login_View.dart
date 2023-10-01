@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:one_click_clearer/persentation/resources/values_manager.dart';
 
 import '../resources/assets_manager.dart';
+import '../resources/routes_manager.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -82,12 +83,12 @@ class _LoginViewState extends State<LoginView> {
                      const SizedBox(
                      child: Text("Don't have account yet ?"),
                      ),
-                     
+
                      Padding(padding: const EdgeInsets.all(AppPadding.p8),
                          child: ElevatedButton(
                         style: Theme.of(context).elevatedButtonTheme.style,
                            onPressed: (){
-
+                             Navigator.pushReplacementNamed(context, Routes.registerRoute);
                            },
                            child: const Text("Sign Up"),
 
