@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:one_click_clearer/persentation/providers/providers_list_ivew.dart';
 import 'package:one_click_clearer/persentation/resources/strings_manager.dart';
 
 import '../Main/main_view.dart';
@@ -18,6 +19,7 @@ class Routes {
   static const String mainRoute = "/main";
   static const String storeDetailsRoute = "/storeDetails";
   static const String onBoarding = "/onBoarding";
+
 }
 
 class RouteGenerator {
@@ -40,6 +42,9 @@ class RouteGenerator {
 
       case Routes.storeDetailsRoute:
         return MaterialPageRoute(builder: (_) => const StoreDetailsView());
+
+
+
 
      // case Routes.onBoarding:
        // return MaterialPageRoute(builder: (_) => const OnBoardingView());

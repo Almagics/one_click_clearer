@@ -69,7 +69,7 @@ class _LoginViewState extends State<LoginView> {
                          child: ElevatedButton(
                            style: Theme.of(context).elevatedButtonTheme.style,
                            onPressed: (){
-
+                             Navigator.pushReplacementNamed(context, Routes.mainRoute);
                            },
                            child: const Text("Login"),
 
