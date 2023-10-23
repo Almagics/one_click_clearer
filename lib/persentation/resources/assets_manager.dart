@@ -16,4 +16,6 @@ class ImageAssets{
 
   static const String contactHeader = "$imagePath/contact/contactHeader.png";
 
+  static const String wcl = "$imagePath/wlc.png";
+
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:one_click_clearer/data/orders/order_service.dart';
 import 'package:one_click_clearer/persentation/payment/payment_view.dart';
 import 'package:one_click_clearer/persentation/resources/color_manager.dart';
 import 'package:intl/intl.dart';
+import '../../data/auth/auth_service.dart';
 import '../resources/assets_manager.dart';
 import '../resources/routes_manager.dart';
 import '../resources/strings_manager.dart';
@@ -25,7 +27,8 @@ class OrderLaundry extends StatefulWidget {
 class _OrderLaundryState extends State<OrderLaundry> {
   @override
 
-
+  final OrderService _OrderService = OrderService();
+  final FirebaseAuthService _auth = FirebaseAuthService();
 
   final countitemsController = TextEditingController();
   final totalpriceController = TextEditingController();
@@ -165,7 +168,12 @@ class _OrderLaundryState extends State<OrderLaundry> {
                                 value: e.toString(),
                               ))
                                   .toList(),
-                              onChanged: (value) {}),
+                              onChanged: (value) {
+                                setState(() {
+                                  cleanmodeController.text = value!;
+                                });
+
+                              }),
                           const SizedBox(
                             height: 20.0,
                           ),
@@ -184,7 +192,11 @@ class _OrderLaundryState extends State<OrderLaundry> {
                                 value: e.toString(),
                               ))
                                   .toList(),
-                              onChanged: (value) {}),
+                              onChanged: (value) {
+                                setState(() {
+                                  recievingController.text = value!;
+                                });
+                              }),
                           const SizedBox(
                             height: 20.0,
                           ),
@@ -206,10 +218,7 @@ class _OrderLaundryState extends State<OrderLaundry> {
                               onPressed: () {
 
                                 if (_formKey.currentState!.validate()) {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                         builder: (ctx) => PaymentView(price: totalPrice,)));
+                                  _addorder();
                                 }
                               },
                               text: 'Submit'),
@@ -230,5 +239,82 @@ class _OrderLaundryState extends State<OrderLaundry> {
       ),
     );
 
+  }
+
+
+  void _addorder() async{
+
+    final String? userEmail = await _auth.getCurrentUserUID();
+
+    String countitems = countitemsController.text;
+    String totalprice= totalPrice;
+     String cleanmode = cleanmodeController.text;
+    String recieving = recievingController.text;
+    String recievingdate = recievingdateController.text;
+
+    String useremail = userEmail.toString();
+    String providerName = widget.id;
+    String orderStatus = 'Under Review';
+
+    String orderType= widget.ordertype;
+
+
+   bool? createOrder = await _OrderService.NewOrder(
+       "",
+       useremail,
+       providerName,
+       providerName,
+       totalprice,
+       orderStatus,
+       orderType,
+       countitems,
+       cleanmode,
+       recieving,
+       recievingdate);
+
+
+
+
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (ctx) => PaymentView(price: totalprice)));
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
+
+  void _displayDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

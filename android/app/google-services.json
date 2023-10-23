@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1024325791627",
+    "project_id": "one-clik-clean",
+    "storage_bucket": "one-clik-clean.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024325791627:android:f39a537632307d1da1098e",
+        "android_client_info": {
+          "package_name": "com.one.click.one_click_clearer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTn9LNxqm6YrknqcojtSkwL3KZejNevkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

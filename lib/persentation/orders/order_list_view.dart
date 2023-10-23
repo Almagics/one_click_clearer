@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:one_click_clearer/data/orders/OrderModel.dart';
+import 'package:one_click_clearer/data/orders/order_service.dart';
 
 import '../resources/color_manager.dart';
 import '../resources/routes_manager.dart';
@@ -14,13 +15,20 @@ class OrderListView extends StatefulWidget {
 }
 
 class _OrderListViewState extends State<OrderListView> {
+  final OrderService _orderService = OrderService();
+
+
+
+
+
+
 
 
   final List<OrderModel> items = [
 
-    OrderModel(customerName: "ahmed sayed", customerId: "fdfdgfgfg", providerName: "clean master", orderDate: "10/10/2023", orderAmount: "115", orderStatus: "Pending", orderType: "Laundry", countItems: "5", iconUrl: ""),
-    OrderModel(customerName: "amr sayed", customerId: "53436", providerName: "clean master", orderDate: "12/10/2023", orderAmount: "105", orderStatus: "Pending", orderType: "Laundry", countItems: "3", iconUrl: ""),
-    OrderModel(customerName: "ali ahmed", customerId: "454543", providerName: "clean master", orderDate: "15/10/2023", orderAmount: "25", orderStatus: "Pending", orderType: "Laundry", countItems: "3", iconUrl: ""),
+    OrderModel(customerName: "ahmed sayed", customerId: "fdfdgfgfg", providerName: "clean master", orderDate: "10/10/2023", orderAmount: "115", orderStatus: "Pending", orderType: "Laundry", countItems: "5", cleanmode: '', recieving: '', recievingdate: '', ),
+    OrderModel(customerName: "amr sayed", customerId: "53436", providerName: "clean master", orderDate: "12/10/2023", orderAmount: "105", orderStatus: "Pending", orderType: "Laundry", countItems: "3", cleanmode: '', recieving: '', recievingdate: '', ),
+    OrderModel(customerName: "ali ahmed", customerId: "454543", providerName: "clean master", orderDate: "15/10/2023", orderAmount: "25", orderStatus: "Pending", orderType: "Laundry", countItems: "3", cleanmode: '', recieving: '', recievingdate: '', ),
 
   ];
 
@@ -48,13 +56,29 @@ class _OrderListViewState extends State<OrderListView> {
         title: Center(child: Text("Order List",style: Theme.of(context).textTheme.titleLarge,)),
       ),
 
+      body: FutureBuilder<List<OrderModel>>(
+        future: _orderService.OrderListData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            final data = snapshot.data;
 
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return CardWithImageAndText(item: items[index]);
+            // Display data in a ListView or other widget
+            return ListView.builder(
+              itemCount: data?.length,
+              itemBuilder: (context, index) {
+                return CardWithImageAndText(item: data![index],);
+              },
+            );
+          } else {
+            return Text('No data found for');
+          }
         },
       ),
+
     );
   }
 }
@@ -93,7 +117,7 @@ class CardWithImageAndText extends StatelessWidget {
             Column(
               children: [
                 Text(item.providerName),
-                Text(item.orderDate)
+                Text(item.recievingdate)
 
               ],
             ),
@@ -118,3 +142,7 @@ class CardWithImageAndText extends StatelessWidget {
     );
   }
 }
+
+
+
+

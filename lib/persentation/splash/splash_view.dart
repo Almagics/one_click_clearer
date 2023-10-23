@@ -38,8 +38,33 @@ class _SplashViewState extends State<SplashView> {
     return Scaffold(
       backgroundColor: ColorManager.primary,
 
-      body:  Center(child: Image(image: const AssetImage(ImageAssets.splashLogo),height: MediaQuery.of(context).size.height,fit: BoxFit.fill,)),
+      body:  Stack(
 
+        children: [
+
+
+      Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Center(child: Image(image: const AssetImage(ImageAssets.splashLogo),height: MediaQuery.of(context).size.height,fit: BoxFit.fill,)),
+
+    ),
+
+
+           Positioned(
+             top:  MediaQuery.of(context).size.height * .4,
+              left: 20.0, // Position from the left
+              right: 20.0,
+
+              child: Center(
+                child: Image(image: AssetImage(ImageAssets.wcl),height: 300,width: MediaQuery.of(context).size.width * .85,
+
+                ),
+              )),
+
+
+        ],
+      )
 
     );
   }

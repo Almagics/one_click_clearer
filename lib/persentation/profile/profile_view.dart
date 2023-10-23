@@ -1,11 +1,44 @@
 import 'package:flutter/services.dart';
+import 'package:one_click_clearer/data/user/user_model.dart';
+import 'package:one_click_clearer/data/user/usewr_service.dart';
 import 'package:one_click_clearer/persentation/resources/color_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/routes_manager.dart';
 
-class Profile extends StatelessWidget {
-  //static const routeName = '/Profile5';
+
+
+
+
+class Profile extends StatefulWidget {
+  const Profile({Key? key}) : super(key: key);
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+
+
+class _ProfileState extends State<Profile> {
+
+  final UserService userdata = UserService();
+  UserModel? data;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+
+  Future<void> fetchData() async {
+    UserModel? newData = await userdata.getDataByGuid();
+    setState(() {
+      data = newData;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double widthC = MediaQuery.of(context).size.width * 100;
@@ -27,7 +60,8 @@ class Profile extends StatelessWidget {
           title: Center(child: Text("My Profile",style: Theme.of(context).textTheme.titleLarge,)),
         ),
         backgroundColor: Colors.grey.shade50,
-        body: SingleChildScrollView(
+        body: data != null
+            ?  SingleChildScrollView(
           child: Directionality(
             textDirection: TextDirection.ltr,
             child: Column(
@@ -42,7 +76,21 @@ class Profile extends StatelessWidget {
               ],
             ),
           ),
-        ));
+        )
+        :const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(
+
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ],
+        ),
+
+    );
   }
 
   Widget _buildHeader(BuildContext context, double width) {
@@ -121,7 +169,7 @@ class Profile extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: Text(
-                          '15',
+                          '0',
                           style: TextStyle(
                               fontSize: 18.0,
                               color: Color(0Xffde6262),
@@ -133,7 +181,7 @@ class Profile extends StatelessWidget {
                   new Column(
                     children: <Widget>[
                       new Text(
-                        'Laundry',
+                        '0',
                         style: new TextStyle(
                             fontSize: 18.0,
                             color: Colors.black,
@@ -142,7 +190,7 @@ class Profile extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: new Text(
-                          '3.5k',
+                          '0',
                           style: new TextStyle(
                               fontSize: 18.0,
                               color: Color(0Xffde6262),
@@ -163,7 +211,7 @@ class Profile extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 6.0),
                         child: new Text(
-                          '150',
+                          '0',
                           style: new TextStyle(
                               fontSize: 18.0,
                               color: Color(0Xffde6262),
@@ -188,13 +236,13 @@ class Profile extends StatelessWidget {
       alignment: AlignmentDirectional.center,
       child: Column(
         children: <Widget>[
-          Text('Test User',
+          Text(data!.fullName,
               style: TextStyle(
                   fontSize: 20,
                   color: Colors.teal,
                   fontWeight: FontWeight.bold)),
           SizedBox(height: 10),
-          Text('User',
+          Text(data!.role,
               style: TextStyle(
                   color: Colors.grey.shade50, fontStyle: FontStyle.italic))
         ],
@@ -219,7 +267,7 @@ class Profile extends StatelessWidget {
                       Icon(Icons.email, color: ColorManager.primary),
                       title: const Text("E-mail",
                           style: TextStyle(fontSize: 18, color: Colors.black)),
-                      subtitle: const Text("email@gmailc.com",
+                      subtitle:  Text(data!.email,
                           style:
                           TextStyle(fontSize: 15, color: Colors.black54)),
                     ),
@@ -227,9 +275,9 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading:
                       Icon(Icons.phone, color: ColorManager.primary),
-                      title: Text("Phone",
+                      title: const Text("Phone",
                           style: TextStyle(fontSize: 18, color: Colors.black)),
-                      subtitle: Text("11-111111-11",
+                      subtitle: Text(data!.phoneNumber,
                           style:
                           TextStyle(fontSize: 15, color: Colors.black54)),
                     ),
@@ -237,9 +285,9 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading:
                       Icon(Icons.person, color: ColorManager.primary),
-                      title: Text("Info",
+                      title: const Text("Info",
                           style: TextStyle(fontSize: 18, color: Colors.black)),
-                      subtitle: Text(
+                      subtitle: const Text(
                           "Normal User",
                           style:
                           TextStyle(fontSize: 15, color: Colors.black54)),
@@ -250,9 +298,9 @@ class Profile extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                       leading: Icon(Icons.my_location,
                           color: ColorManager.primary),
-                      title: Text("Address",
+                      title: const Text("Address",
                           style: TextStyle(fontSize: 18, color: Colors.black)),
-                      subtitle: Text("KSA",
+                      subtitle: Text(data!.address,
                           style:
                           TextStyle(fontSize: 15, color: Colors.black54)),
                     ),
@@ -263,7 +311,14 @@ class Profile extends StatelessWidget {
           ),
         ));
   }
+
+
 }
+
+
+
+
+
 
 
 
