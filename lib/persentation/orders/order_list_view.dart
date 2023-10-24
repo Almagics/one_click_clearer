@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:one_click_clearer/data/orders/OrderModel.dart';
 import 'package:one_click_clearer/data/orders/order_service.dart';
 
+import '../rate/rate_view.dart';
 import '../resources/color_manager.dart';
 import '../resources/routes_manager.dart';
 
@@ -60,7 +61,7 @@ class _OrderListViewState extends State<OrderListView> {
         future: _orderService.OrderListData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
@@ -90,53 +91,58 @@ class CardWithImageAndText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4.0,
-      margin: EdgeInsets.all(16.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Container(
-        color: ColorManager.primary,
-        child:  Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Image at the top of the card, stretched to fill
-            Column(
-              children: [
-                GestureDetector(
-                    onTap: (){
+    return GestureDetector(
 
-                      //code here
-                    },
-                    child: Icon(Icons.info,size: 50,color: Colors.grey,))
+      onTap: (){
 
-              ],
-            ),
-
-            Column(
-              children: [
-                Text(item.providerName),
-                Text(item.recievingdate)
-
-              ],
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (ctx) => RatingScreen()));
+      },
+      child: Card(
+        elevation: 4.0,
+        margin: EdgeInsets.all(16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Container(
+          color: ColorManager.primary,
+          child:  Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Image at the top of the card, stretched to fill
+              Column(
                 children: [
-
-                  Text('Amount : ' + item.orderAmount),
-                  Text('Pieces : ' + item.countItems),
+                  Icon(Icons.info,size: 50,color: Colors.grey,)
 
                 ],
               ),
-            ),
 
-            // Text at the bottom of the card, centered with shadow
+              Column(
+                children: [
+                  Text(item.providerName),
+                  Text(item.recievingdate)
 
-          ],
+                ],
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+
+                    Text('Amount : ' + item.orderAmount),
+                    Text('Pieces : ' + item.countItems),
+
+                  ],
+                ),
+              ),
+
+              // Text at the bottom of the card, centered with shadow
+
+            ],
+          ),
         ),
       ),
     );
